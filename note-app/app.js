@@ -1,20 +1,34 @@
 
 const fs = require('fs');
 const _ = require('lodash');
+const yargs = require('yargs');
 
 const notes = require('./notes');
 
-let command = process.argv[2];
+const argv = yargs.argv;
 
-console.log(process.argv);
+const command = process.argv[2];
 
 if (command === 'add') {
-    console.log("Adding a new note...");
+    notes.addNote(argv.title, argv.body);
 } else if (command === 'list') {
-    console.log("Listing all the notes...");
+    const allNotes = notes.getAll();
+    console.log(allNotes);
 } else if (command === 'read') {
-    console.log('Reading note...');
+    if (!argv.title) {
+        console.log("Read needs a title. Try using '--title'");
+        process.exit(1);
+    }
+
+    const note = notes.readNote(argv.title);
+    console.log(note);
 } else if (command === 'remove') {
+    if (!argv.title) {
+        console.log("Remove needs a title. Try using '--title'");
+        process.exit(1);
+    }
+
+    notes.removeNote(argv.title);
     console.log('Removing the note...');
 } else {
     console.log('Command not recognized. Try again..');
