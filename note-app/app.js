@@ -16,7 +16,14 @@ if (command === 'add') {
   }
 } else if (command === 'list') {
   const allNotes = notes.getAll();
-  console.log(allNotes);
+  if (allNotes.length > 0) {
+    allNotes.forEach(note => {
+      console.log('Note tite:', note.title);
+      console.log('Note body', note.body, '\n');
+    });
+  } else {
+    console.log('There are currently no notes stored.');
+  }
 } else if (command === 'read') {
   if (!argv.title) {
     console.log('Read needs a title. Try using --title');
@@ -24,7 +31,12 @@ if (command === 'add') {
   }
 
   const note = notes.readNote(argv.title);
-  console.log(note);
+
+  if (note) {
+    console.log('Note', note);
+  } else {
+    console.log('There was no note with that title');
+  }
 } else if (command === 'remove') {
   if (!argv.title) {
     console.log('Remove needs a title. Try using --title');
@@ -32,7 +44,7 @@ if (command === 'add') {
   }
 
   notes.removeNote(argv.title);
-  console.log('Removing the note...');
+  console.log('Note removed');
 } else {
   console.log('Command not recognized. Try again..');
 }

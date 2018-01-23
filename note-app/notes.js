@@ -34,11 +34,22 @@ const addNote = (title, body) => {
   return note;
 };
 
-const getAll = () => 'Getting all notes.';
+const getAll = () => fetchNotes();
 
-const readNote = title => 'Here\'s your note.';
+const readNote = title => {
+  const notes = fetchNotes();
 
-const removeNote = title => 'Removed your note.';
+  return notes.find(note => note.title === title);
+};
+
+const removeNote = title => {
+  let notes = fetchNotes();
+  notes = notes.filter(note => {
+    note.title !== title;
+  });
+  saveNotes(notes);
+  return;
+};
 
 module.exports = {
   addNote,
