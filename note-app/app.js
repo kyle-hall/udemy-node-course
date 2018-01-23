@@ -8,7 +8,12 @@ const argv = yargs.argv;
 const command = process.argv[2];
 
 if (command === 'add') {
-  notes.addNote(argv.title, argv.body);
+  const note = notes.addNote(argv.title, argv.body);
+  if (note) {
+    console.log('Added note', note);
+  } else {
+    console.log('Note title already in use. Try again with a different title');
+  }
 } else if (command === 'list') {
   const allNotes = notes.getAll();
   console.log(allNotes);
