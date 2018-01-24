@@ -1,4 +1,9 @@
 {
+  "name": "udemy-node-course",
+  "version": "1.0.0",
+  "repository": "https://github.com/kyle-hall/udemy-node-course.git",
+  "author": "Kyle Hall <hallkd47@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "eslint": "^4.16.0"
   }
