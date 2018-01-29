@@ -28,7 +28,7 @@ const darkskyCallback = (err, result) => {
     process.exit(1);
   }
 
-  console.log('Printing the data', result.currently.temperature);
+  console.log('Current temp:', result.currently.temperature);
 };
 
 const geocodeCallback = (errorMessage, results) => {
