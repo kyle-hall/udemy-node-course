@@ -1,7 +1,7 @@
 
 const request = require('request');
 
-const geocode = address => {
+const geocode = (address, callback) => {
 
   const encodedAddress = encodeURIComponent(address);
 
@@ -10,23 +10,25 @@ const geocode = address => {
     json: true
   };
   
-  const callback = (err, response, body) => {
+  const googleCallback = (err, response, body) => {
     if (err) {
-      console.error(`Error: ${err}`);
-      process.exit(1);
+      callback('There was an error calling the Google servers to retrieve the address.');
     }
   
     if (body.status === 'ZERO_RESULTS') {
-      console.error('Error: No results for that address');
-      process.exit(1);
+      callback('That address yielded zero results. Try another.');
     }
-    
-    const data = body.results[0];
-    console.log(data.formatted_address);
-    console.log(data.geometry);
+
+    const results = {
+      address: body.results[0].formatted_address,
+      latitude: body.results[0].geometry.location.lat,
+      longitude: body.results[0].geometry.location.lng
+    };
+
+    callback(null, results);
   };
   
-  request(options, callback);
+  request(options, googleCallback);
 
 };
 
