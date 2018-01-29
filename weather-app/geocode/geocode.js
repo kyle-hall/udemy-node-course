@@ -9,12 +9,12 @@ const geocode = (address, callback) => {
     url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`,
     json: true
   };
-  
+
   const googleCallback = (err, response, body) => {
     if (err) {
       callback('There was an error calling the Google servers to retrieve the address.');
     }
-  
+
     if (body.status === 'ZERO_RESULTS') {
       callback('That address yielded zero results. Try another.');
     }
@@ -27,7 +27,7 @@ const geocode = (address, callback) => {
 
     callback(null, results);
   };
-  
+
   request(options, googleCallback);
 
 };
