@@ -18,26 +18,17 @@ const main = () => {
     .alias('help', 'h')
     .argv;
 
-  geocode.geocode(argv.address, geocodeCallback);
+  geocode.geocode(argv.address)
+    .then((location) => {
+      return darksky.sendRequest(location);
+    })
+    .then((currently) => {
+      console.log(currently.temperature);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-};
-
-const darkskyCallback = (err, result) => {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
-
-  console.log('Current temp:', result.currently.temperature);
-};
-
-const geocodeCallback = (errorMessage, results) => {
-  if (errorMessage) {
-    console.log(errorMessage);
-    process.exit(1);
-  }
-
-  darksky.sendRequest(results.latitude, results.longitude, darkskyCallback);
 };
 
 main();

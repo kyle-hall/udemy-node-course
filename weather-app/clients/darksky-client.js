@@ -1,26 +1,22 @@
 
-const request = require('request');
+const axios = require('axios');
 
-const sendRequest = (latitude, longitude, callback) => {
+const sendRequest = (location) => {
 
   const options = {
-    url: `https://api.darksky.net/forecast/${process.env.DARK_SKY_API_KEY}/${latitude},${longitude}`,
-    json: true
+    method: 'get',
+    url: `https://api.darksky.net/forecast/${process.env.DARK_SKY_API_KEY}/${location.lat},${location.lng}`,
+    responseType: 'json'
   };
 
-  const apiCallback = (err, response, body) => {
-    if (err) {
-      callback(err);
-    }
-
-    if (response.statusCode !== 200) {
-      callback(`Bad response: ${body}`);
-    }
-
-    callback(undefined, body);
-  };
-
-  request(options, apiCallback);
+  console.log('About to send the dark sky request');
+  return axios(options)
+    .then((res) => {
+      return res.data.currently;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
 };
 

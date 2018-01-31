@@ -1,34 +1,27 @@
 
-const request = require('request');
+const axios = require('axios');
 
-const geocode = (address, callback) => {
+const geocode = (address) => {
 
   const encodedAddress = encodeURIComponent(address);
 
   const options = {
-    url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`,
-    json: true
+    method: 'get',
+    url: `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.WEATHER_APP_GOOGLE_API_KEY}&address=${encodedAddress}`,
+    responseType: 'json'
   };
 
-  const googleCallback = (err, response, body) => {
-    if (err) {
-      callback('There was an error calling the Google servers to retrieve the address.');
-    }
-
-    if (body.status === 'ZERO_RESULTS') {
-      callback('That address yielded zero results. Try another.');
-    }
-
-    const results = {
-      address: body.results[0].formatted_address,
-      latitude: body.results[0].geometry.location.lat,
-      longitude: body.results[0].geometry.location.lng
-    };
-
-    callback(null, results);
-  };
-
-  request(options, googleCallback);
+  return axios(options)
+    .then((res) => {
+      return res.data;
+    })
+    .then((data) => {
+      console.log(JSON.stringify(data.results[0].geometry.location, undefined, 2));
+      return data.results[0].geometry.location;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
 };
 
