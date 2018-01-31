@@ -9,10 +9,6 @@ module.exports = {
       "error",
       2
     ],
-    "linebreak-style": [
-      "warn",
-      "windows"
-    ],
     "quotes": [
       "error",
      "single"
