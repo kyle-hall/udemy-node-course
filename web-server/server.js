@@ -1,16 +1,26 @@
 
+const path = require('path');
+
 const express = require('express');
 const app = express();
 
 app.set('views', 'public');
 app.set('view engine', 'pug');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
-  res.send('<h1>Hello, Express</h1>');
+  res.render('index', {
+    currentYear: new Date().getFullYear()
+  });
 });
 
 app.get('/help', (req, res) => {
-  res.render('help', { title: 'Help', message: 'Some Text Here' });
+  res.render('help', {
+    title: 'Help',
+    message: 'Some Text Here',
+    currentYear: new Date().getFullYear()
+  });
 });
 
 app.get('/about', (req, res) => {
